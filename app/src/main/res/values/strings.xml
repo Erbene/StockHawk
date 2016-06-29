@@ -10,4 +10,11 @@
   <string name="input_hint">FB</string>
   <string name="input_prefill"></string>
   <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+  <string name="already_in_db">This stock is already saved!</string>
+  <string name="invalid_input">Invalid stock name.</string>
+  <string name="server_unavailable">Unable to communicate with server. Please try again later or check your connectivity status.</string>
+
+    <!-- Content description for all buttons -->
+    <string name="add_stock_button_content_description">This button allows you to add a stock to your stock list.</string>
+
 </resources>
