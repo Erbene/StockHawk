@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by sam_chordas on 9/30/15.
@@ -123,8 +124,8 @@ public class StockTaskService extends GcmTaskService{
             String stockInput = params.getExtras().getString("symbol");
             Date startDate = new Date();
             Date endDate = new Date();
-            startDate.setTime(startDate.getTime() - 10*24*60*60*1000);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            startDate.setTime(startDate.getTime() - 11*24*60*60*1000);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
             try {
                 urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.historicaldata where symbol = \"" +
                         stockInput+"\" and startDate = \"" +

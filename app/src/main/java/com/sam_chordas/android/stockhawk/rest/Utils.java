@@ -5,7 +5,11 @@ import android.util.Log;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteHistoricColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,8 +98,10 @@ public class Utils {
             builder = ContentProviderOperation.newInsert(
                     QuoteProvider.Quotes.CONTENT_URI);
             try {
+                Date now = new Date();
                 String change = jsonObject.getString("Change");
                 builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
+                builder.withValue(QuoteColumns.CREATED, now.getTime());
                 builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString("Bid")));
                 builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
                         jsonObject.getString("ChangeinPercent"), true));

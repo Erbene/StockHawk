@@ -60,6 +60,7 @@ public class QuoteProvider {
             path = Path.QUOTE_HISTORIC + "/*",
             type = "vnd.android.cursor.item/quote_historic",
             whereColumn = QuoteHistoricColumns.SYMBOL,
+            defaultSort = QuoteHistoricColumns.DATE + " ASC",
             pathSegment = 1
     )
     public static Uri withSymbol(String symbol){

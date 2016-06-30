@@ -40,6 +40,8 @@ import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
+import java.util.Date;
+
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     /**
@@ -91,6 +93,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 new RecyclerViewItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View v, int position) {
                         Intent intent = new Intent(getApplicationContext(), StockHistoricActivity.class);
+                        mCursor.moveToPosition(position);
+                        intent.putExtra("symbol", mCursor.getString(mCursor.getColumnIndex("symbol")));
                         startActivity(intent);
                     }
                 }));
@@ -158,6 +162,18 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
             // Schedule task with tag "periodic." This ensure that only the stocks present in the DB
             // are updated.
             GcmNetworkManager.getInstance(this).schedule(periodicTask);
+        } else {
+            Cursor cursor = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,null,null,null,null);
+            if(cursor.getCount() > 0){
+                cursor.moveToNext();
+                String timestamp = cursor.getString(cursor.getColumnIndex(QuoteColumns.CREATED));
+                long time = Long.parseLong(timestamp);
+                Date now = new Date();
+                //Check if entries are outdated.
+                if(now.getTime() - time > 3600000L) outdatedToast();
+            } else {
+                networkToast();
+            }
         }
         mEventReceiver = new BroadcastReceiver() {
 
@@ -196,6 +212,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
     public void networkToast(){
         Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
+    }
+    public void outdatedToast(){
+        Toast.makeText(mContext, getString(R.string.outdated_toast), Toast.LENGTH_LONG).show();
     }
 
     public void restoreActionBar() {
